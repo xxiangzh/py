@@ -9,6 +9,7 @@ if __name__ == "__main__":
     # 建立数据库连接
     dbc = pymysql.connect(
         host="localhost",
+        port="3306",
         user="root",
         passwd="123456",
         database="xzh"
