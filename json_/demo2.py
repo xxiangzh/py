@@ -37,4 +37,3 @@ if __name__ == "__main__":
 
     # get取值，不会抛异常，不存在返回None，可设置返回默认值
     print(pythonDict.get('data').get('records')[0].get('name', "默认值"))
-
