@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import hellocp
+import hellocm
 
 
 def hl(x):
@@ -14,5 +14,5 @@ if __name__ == "__main__":
 
     hl('张三')
 
-    c = hellocp.Hlclass('李四', 3)
+    c = hellocm.Hlclass('李四', 3)
     c.hlh()
