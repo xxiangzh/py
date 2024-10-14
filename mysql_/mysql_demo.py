@@ -15,7 +15,7 @@ if __name__ == "__main__":
     )
     print(dbc)
 
-    cursor = dbc.cursor()
+    cursor = dbc.cursor(dictionary=True)
 
     sql = "SELECT * FROM t_user WHERE id = 1"
 
@@ -29,4 +29,3 @@ if __name__ == "__main__":
     # 关闭游标和连接
     cursor.close()
     dbc.close()
-
