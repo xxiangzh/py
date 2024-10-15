@@ -1,0 +1,7 @@
+1.安装打包工具命令
+pip install pyinstaller
+
+2.在demo.py文件所在的目录使用命令打包
+pyinstaller -F -w demo.py
+或
+pyinstaller --onefile --windowed demo.py
