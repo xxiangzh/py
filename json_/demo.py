@@ -14,7 +14,7 @@ if __name__ == "__main__":
     print("pythonObj：", pythonObj)
 
     # python字典 转 json字符串
-    jsonStr = json.dumps(pythonObj)
+    jsonStr = json.dumps(pythonObj, ensure_ascii=False)
     print("type：", type(jsonStr))
     print("jsonStr：", jsonStr)
 
