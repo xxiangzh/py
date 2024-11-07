@@ -12,13 +12,19 @@ def write():
     wb = Workbook()
     # 获取第一个sheet
     sheet = wb.active
+
     # 添加第1行标题
     sheet.append(['编号', '时间'])
     # 再添加5行数据
     for i in range(5):
-        a = i + 1
-        b = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-        sheet.append([a, b])
+        row = [
+            # 第1列
+            i + 1,
+            # 第2列
+            time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+        ]
+        sheet.append(row)
+
     wb.save("D:demo.xlsx")
 
 
