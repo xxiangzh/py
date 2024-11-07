@@ -9,24 +9,19 @@ if __name__ == "__main__":
     # 建立数据库连接
     dbc = pymysql.connect(
         host="localhost",
-        port="3306",
+        port=3306,
         user="root",
         passwd="123456",
         database="xzh"
     )
     print(dbc)
-
     cursor = dbc.cursor()
-
     sql = "SELECT * FROM t_user WHERE id = 1"
-
     cursor.execute(sql)
-
     result = cursor.fetchall()
-
+    print(type(result))
     for x in result:
         print(x)
-
     # 关闭游标和连接
     cursor.close()
     dbc.close()
