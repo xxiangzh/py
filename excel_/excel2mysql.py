@@ -5,7 +5,7 @@ import mysql.connector
 from openpyxl import load_workbook
 
 
-def saveResult(sql, val):
+def save_result(sql, val):
     # 建立数据库连接
     dbc = mysql.connector.connect(
         host="localhost",
@@ -50,4 +50,5 @@ if __name__ == "__main__":
     path = "D:demo.xlsx"
 
     row_list = read(path)
-    saveResult(sql, row_list)
+    save_result(sql, row_list)
+    print("完成")
