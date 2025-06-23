@@ -1,6 +1,4 @@
 import os
-import random
-import string
 
 """
 给路径下的所有文件添加前缀（使用文件所在文件夹名作为前缀，包括子文件夹）
@@ -17,14 +15,18 @@ if not os.path.isdir(target_dir):
 for foldername, subfolders, filenames in os.walk(target_dir):
     # 获取当前文件夹名称
     folder_name = os.path.basename(foldername)
-    # 生成两位随机字母（可能重复，包含大小写）
-    random_letters = ''.join(random.choices(string.ascii_letters, k=2))
-    prefix = f"{folder_name}_" + random_letters
 
-    # 处理当前文件夹中的所有文件
-    for filename in filenames:
+    # 按文件名排序，确保序号顺序一致
+    filenames_sorted = sorted(filenames)
+
+    # 为当前文件夹中的文件添加序号
+    for index, filename in enumerate(filenames_sorted, start=1):
         old_path = os.path.join(foldername, filename)
-        new_filename = prefix + filename
+        # 提取文件扩展名
+        file_base, file_ext = os.path.splitext(filename)
+
+        # 构建新文件名：文件夹名_序号_原文件名
+        new_filename = f"{folder_name}_{index}_{file_base}{file_ext}"
         new_path = os.path.join(foldername, new_filename)
 
         # 跳过已存在同名文件的情况
@@ -34,6 +36,8 @@ for foldername, subfolders, filenames in os.walk(target_dir):
 
         try:
             os.rename(old_path, new_path)
-            print(f"✅ 成功：{os.path.relpath(old_path, target_dir)} -> {new_filename}")
+            rel_path = os.path.relpath(old_path, target_dir)
+            print(f"✅ 成功：{rel_path} -> {new_filename}")
         except Exception as e:
-            print(f"❌ 失败：{os.path.relpath(old_path, target_dir)} 错误信息：{str(e)}")
+            rel_path = os.path.relpath(old_path, target_dir)
+            print(f"❌ 失败：{rel_path} 错误信息：{str(e)}")
