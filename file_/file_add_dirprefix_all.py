@@ -1,4 +1,6 @@
 import os
+import random
+import string
 
 """
 给路径下的所有文件添加前缀（使用文件所在文件夹名作为前缀，包括子文件夹）
@@ -15,7 +17,9 @@ if not os.path.isdir(target_dir):
 for foldername, subfolders, filenames in os.walk(target_dir):
     # 获取当前文件夹名称
     folder_name = os.path.basename(foldername)
-    prefix = f"{folder_name}_"
+    # 生成两位随机字母（可能重复，包含大小写）
+    random_letters = ''.join(random.choices(string.ascii_letters, k=2))
+    prefix = f"{folder_name}_" + random_letters
 
     # 处理当前文件夹中的所有文件
     for filename in filenames:
