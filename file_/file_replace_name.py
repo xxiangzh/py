@@ -33,6 +33,8 @@ for filename in os.listdir(target_dir):
 
         try:
             os.rename(file_path, new_file_path)
-            print(f"✅ 成功：{filename} -> {new_filename}")
+            # print(f"✅ 成功：{filename} -> {new_filename}")
         except Exception as e:
             print(f"❌ 失败：{filename} 错误信息：{str(e)}")
+
+print(f"✅ 完成")

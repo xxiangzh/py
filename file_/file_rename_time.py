@@ -1,71 +1,59 @@
 import os
 from datetime import datetime
 
+"""
+给路径下的所有文件重命名为文件创建时间（格式：年_月_日_时_分_秒）
+如果出现冲突则添加序号（1,2,3...）
+"""
+# 在这里修改参数↓↓↓↓↓↓↓↓↓↓
+target_dir = r"D:\test"  # 需要处理的文件夹路径
 
-def get_creation_time(path):
-    """获取文件创建时间"""
-    ctime = os.path.getctime(path)
-    return datetime.fromtimestamp(ctime)
+# 验证文件夹是否存在
+if not os.path.isdir(target_dir):
+    print(f"错误：路径 '{target_dir}' 不存在或不是文件夹。")
+    exit()
 
+# 用于跟踪时间戳出现次数的字典
+timestamp_counter = {}
 
-def safe_rename(src, dst):
-    """处理文件名冲突的重命名"""
-    if not os.path.exists(dst):
-        # 更安全的跨盘符重命名
-        os.replace(src, dst)
-        return dst
+# 遍历目标文件夹
+for filename in os.listdir(target_dir):
+    file_path = os.path.join(target_dir, filename)
 
-    base, ext = os.path.splitext(dst)
-    counter = 1
-    while True:
-        new_dst = f"{base}_{counter}{ext}"
-        if not os.path.exists(new_dst):
-            os.replace(src, new_dst)
-            return new_dst
-        counter += 1
+    if os.path.isfile(file_path):
+        # 获取文件创建时间并格式化
+        ctime = os.path.getctime(file_path)
+        formatted_time = datetime.fromtimestamp(ctime).strftime("%Y_%m_%d_%H_%M_%S")
 
+        # 分离文件名和扩展名
+        base_name, extension = os.path.splitext(filename)
 
-def batch_rename(folder_path, dry_run=False):
-    renamed = 0
-    errors = 0
+        # 初始化新文件名（无序号版本）
+        new_filename = f"{formatted_time}{extension}"
+        new_file_path = os.path.join(target_dir, new_filename)
 
-    for root, _, files in os.walk(folder_path):
-        for file in files:
-            src = os.path.join(root, file)
+        # 处理文件名冲突
+        if new_filename in timestamp_counter:
+            timestamp_counter[new_filename] += 1
+            counter = timestamp_counter[new_filename]
+            new_filename = f"{formatted_time}_{counter}{extension}"
+            new_file_path = os.path.join(target_dir, new_filename)
+        else:
+            timestamp_counter[new_filename] = 0  # 初始化计数器
 
-            try:
-                # 获取文件信息
-                ctime = get_creation_time(src)
-                ext = os.path.splitext(file)[1]
-                new_name = ctime.strftime("%Y_%m_%d_%H_%M_%S") + ext
-                dst = os.path.join(root, new_name)
+        # 检查文件是否存在（处理跨文件冲突）
+        attempt_count = 1
+        while os.path.exists(new_file_path):
+            attempt_count += 1
+            new_filename = f"{formatted_time}_{attempt_count}{extension}"
+            new_file_path = os.path.join(target_dir, new_filename)
+            timestamp_counter[new_filename] = attempt_count
 
-                # 显示操作预览
-                if dry_run:
-                    print(f"[预览] {file} -> {new_name}")
-                    continue
+        # 重命名文件
+        try:
+            os.rename(file_path, new_file_path)
+            # print(f"✅ 成功: {filename} -> {new_filename}")
+        except Exception as e:
+            print(f"❌ 失败: {filename} 错误信息: {str(e)}")
 
-                # 执行重命名
-                final_path = safe_rename(src, dst)
-                print(f"已重命名: {file} -> {os.path.basename(final_path)}")
-                renamed += 1
-
-            except PermissionError:
-                print(f"权限不足: {file}")
-                errors += 1
-            except Exception as e:
-                print(f"错误 {file}: {str(e)}")
-                errors += 1
-
-    print(f"\n操作结果: 成功 {renamed} 个, 失败 {errors} 个")
-
-
-if __name__ == "__main__":
-    # 使用前请修改路径
-    target_folder = r"D:\a"
-
-    # 试运行（不实际修改）
-    batch_rename(target_folder, dry_run=True)
-
-    # 确认无误后注释上行，取消注释下行执行实际操作
-    # batch_rename(target_folder)
+print(f"✅ 完成")

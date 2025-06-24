@@ -24,9 +24,11 @@ for foldername, subfolders, filenames in os.walk(target_dir):
         old_path = os.path.join(foldername, filename)
         # 提取文件扩展名
         file_base, file_ext = os.path.splitext(filename)
+        # 生成两位数序号（小于10的前面加0）
+        index_str = f"{index:02d}"
 
         # 构建新文件名：文件夹名_序号_原文件名
-        new_filename = f"{folder_name}_{index}_{file_base}{file_ext}"
+        new_filename = f"{folder_name}_{index_str}_{file_base}{file_ext}"
         new_path = os.path.join(foldername, new_filename)
 
         # 跳过已存在同名文件的情况
@@ -37,7 +39,9 @@ for foldername, subfolders, filenames in os.walk(target_dir):
         try:
             os.rename(old_path, new_path)
             rel_path = os.path.relpath(old_path, target_dir)
-            print(f"✅ 成功：{rel_path} -> {new_filename}")
+            # print(f"✅ 成功：{rel_path} -> {new_filename}")
         except Exception as e:
             rel_path = os.path.relpath(old_path, target_dir)
             print(f"❌ 失败：{rel_path} 错误信息：{str(e)}")
+
+print(f"✅ 完成")

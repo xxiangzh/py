@@ -29,3 +29,5 @@ for filename in os.listdir(target_dir):
             print(f"✅ 成功：{filename} -> {new_filename}")
         except Exception as e:
             print(f"❌ 失败：{filename} 错误信息：{str(e)}")
+
+print(f"✅ 完成")
