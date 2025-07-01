@@ -22,7 +22,6 @@ for filename in os.listdir(target_dir):
         if old_str in filename:
             new_filename = filename.replace(old_str, new_str)
         else:
-            print(f"⚠️ 跳过 {filename}，未找到要替换的字段 '{old_str}'")
             continue
 
         new_file_path = os.path.join(target_dir, new_filename)
