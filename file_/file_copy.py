@@ -103,9 +103,9 @@ def flat_copy_with_filter(
 
 if __name__ == "__main__":
     # 配置参数
-    SOURCE_FOLDER = r"D:\a"  # 修改为源路径
-    TARGET_FOLDER = r"D:\b"  # 修改为目标路径
-    EXCLUDE_EXTENSIONS = {'.jpg', '.zip'}  # 排除的扩展名
+    SOURCE_FOLDER = r"D:\Zzz\a"  # 源路径
+    TARGET_FOLDER = r"D:\Zzz\b"  # 目标路径
+    EXCLUDE_EXTENSIONS = {'.jpg', '.zip', '.torrent', '.js'}  # 排除的扩展名
 
     # 执行复制
     result = flat_copy_with_filter(
